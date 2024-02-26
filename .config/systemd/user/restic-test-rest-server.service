@@ -1,0 +1,8 @@
+[Unit]
+Description=Test restic rest server
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sh -c "ping -q -n -c 1 192.168.1.100 > /dev/null"
+ExecStart=/bin/sh -c "curl --silent --head --fail -L http://192.168.1.100:8000/fedora_silverblue-39_T480/config > /dev/null"

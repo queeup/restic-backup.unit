@@ -1,0 +1,9 @@
+/*
+
+!/home
+$HOME/*
+!$HOME/docker-compose
+$HOME/docker-compose/*
+!$HOME/docker-compose/immich
+$HOME/docker-compose/immich/data/encoded-video
+$HOME/docker-compose/immich/data/upload

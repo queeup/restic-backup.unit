@@ -1,0 +1,33 @@
+[Unit]
+Description=Restic %i backup service
+
+[Service]
+Type=oneshot
+ExecSearchPath=%h/.nix-profile/bin
+ExecStart=restic backup \
+    --verbose \
+    --no-scan \
+    --tag systemd.timer \
+    --tag %i \
+    $BACKUP_EXCLUDES $BACKUP_PATHS
+ExecStartPost=restic forget \
+    --verbose \
+    --tag systemd.timer \
+    --tag %i \
+    --group-by "paths,tags" \
+    --keep-daily $RETENTION_DAYS \
+    --keep-weekly $RETENTION_WEEKS \
+    --keep-monthly $RETENTION_MONTHS \
+    --keep-yearly $RETENTION_YEARS \
+    --keep-tag $RETENTION_TAGS
+EnvironmentFile=%h/.config/restic-backup.conf
+Environment=RESTIC_PASSWORD_FILE=%d/resticPassword
+SetCredentialEncrypted=resticPassword: \
+        DHzAexF2RZGcSwvqCLwg/iAAAAABAAAADAAAABAAAABfKnE54sqX4+gKMdgAAAAAgAAAA \
+        AAAAAALACMA0AAAACAAAAAAfgAgajWIJLIL9Iheice4HQGNKIvNcWkNIQ9SJI2mASaSQQ \
+        AAEJU+pedT0IkhPeOC/bNKtCrOJnp/xe0blHd5xCf/Gn6S+M3pXDo8++9PZZI2nYuJQ9I \
+        svhE2utUyhBJxWvi8Xa+T4Gtq5mwwxdDNrj0ldtwFnjhIc24iXoFJBgBOAAgACwAAABIA \
+        IBeMcd3DnwcSE0rRRtbd5XI+YHDAxPKhAm/EsrccZ6BCABAAIGlW5yTYQxRRdA66DjLkK \
+        XHekFUvGhu7QiZwy7rpCBDSF4xx3cOfBxITStFG1t3lcj5gcMDE8qECb8SytxxnoEIAAA \
+        AA+ztHC8ohLQkBObVYrQL8J/Bc96Pdj07n2hAD+wmGa5nX+/nUuxGbYPBBWgPb21lzTAt \
+        FKzp831yEKkWTzL2as919yMBo
